@@ -1,9 +1,11 @@
 package com.hy.model.easyui;
 
+import java.io.Serializable;
+
 /**
  * Created by yyy1867 on 2016/12/30.
  */
-public class EasyUIDatagridCloumn {
+public class EasyUIDatagridCloumn implements Serializable {
     private String title;
     private String field;
     private Integer width;
@@ -15,13 +17,21 @@ public class EasyUIDatagridCloumn {
     private String __data;
 
     public EasyUIDatagridCloumn() {
-
+        init();
     }
 
     public EasyUIDatagridCloumn(String title, String field, Integer width) {
+        init();
         this.title = title;
         this.field = field;
         this.width = width;
+    }
+
+    private void init() {
+        this.align = "center";
+        this.halign = "center";
+        this.sortable = false;
+        this.checkbox = false;
     }
 
     public String getTitle() {

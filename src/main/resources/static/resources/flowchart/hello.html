@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>flowchart.js · Playground</title>
+        <style type="text/css">
+        </style>
+        <script src="raphael-min.js"></script>
+        <script src="jquery-1.8.0.js"></script>
+        <script src="flowchart-1.4.0.js"></script>
+        <!--<script src="../release/flowchart-1.4.0.min.js"></script>-->
+        <script>
+            window.onload = function () {
+                var btn = document.getElementById("run"),
+                    cd = document.getElementById("code"),
+                    chart;
+                (btn.onclick = function () {
+                    var code = cd.value;
+                    if (chart) {
+                      chart.clean();
+                    }
+                    chart = flowchart.parse(code);
+                    chart.drawSVG('canvas', {
+                      // 'x': 30,
+                      // 'y': 50,
+                      'line-width': 2,
+                      'line-length': 50,
+                      'text-margin': 10,
+                      'font-size': 14,
+                      'font': 'normal',
+                      'font-family': 'Microsoft Yahei',
+                      'font-weight': 'normal',
+                      'font-color': 'black',
+                      'line-color': '#222222',
+                      'element-color': 'white',
+                      'fill': '#dddddd',
+                      'yes-text': '是',
+                      'no-text': '否',
+                      'arrow-end': 'block',
+                      'scale': 1,
+                      'symbols': {
+                        'start': {
+                        	'fill': 'white',
+                          'element-color': '#2B9646', 
+                          'font-color': '#2B9646'
+                        },
+                        'end':{
+                          'fill': 'white',
+                          'element-color': '#F05033',
+                          'font-color': '#F05033'
+                        }
+                      },
+                      'flowstate': {
+                        'past': {'fill':'white'},
+                        'current': {'fill':'#F43C12', 'font-weight':'bold', 'font-color':'red'},
+                        'future': {},
+                        'request': {},
+                        'invalid': {},
+                        'approved': {'font-color': '#34B655'},
+                        'rejected': {'font-color': '#F43C12'}
+                      }
+                    });
+                })();
+            };
+        </script>
+    </head>
+    <body>
+        <div><textarea id="code" style="width: 100%;" rows="11">
+{"key":"start", "symbolType":"start", "text":"开始"}
+{"key":"op1", "symbolType":"task", "text":"人工环节1", "width":119, "height":64, "x":10, "y": 10}
+{"key":"co1", "symbolType":"condition", "text":"条件?", "flowstate": "approved"}
+{"key":"op2", "symbolType":"task", "text":"人工环节2", "width":119, "height":64, "link":"javascript:alert(1);", "target":"blank", "flowstate":"current"}
+{"key":"end", "symbolType":"end", "text":"结束"}
+start(right)->op1(right)->co1(yes, right)->op2(right)->end
+co1(no, right)->end
+        </textarea></div>
+        <div><button id="run" type="button">Run</button></div>
+        <div id="canvas"></div>
+    </body>
+</html>

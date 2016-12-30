@@ -1,0 +1,63 @@
+/*tabs*/
+.tabs-header,
+.tabs-scroller-left,
+.tabs-scroller-right,
+.tabs-tool,
+.tabs,
+.tabs-panels,
+.tabs li a.tabs-inner {
+  border-color: #D9D9D9;
+}
+
+.tabs li.tabs-selected a.tabs-inner,
+.tabs-header-bottom .tabs li.tabs-selected a.tabs-inner,
+.tabs-header-left .tabs li.tabs-selected a.tabs-inner,
+.tabs-header-right .tabs li.tabs-selected a.tabs-inner {
+	border-color: #00479D;
+}
+
+.tabs {
+  border-width: 0;
+  padding-left: 10px;
+}
+
+.tabs li {
+	margin: 0 4px 0 0;
+}
+
+
+.tabs li a.tabs-inner {
+  color: #333;
+  background: #FFFFFF;
+  -moz-border-radius: 2px 2px 0 0;
+  -webkit-border-radius: 2px 2px 0 0;
+  border-radius: 2px 2px 0 0;
+  border-bottom: 0;
+  padding: 0 14px;
+  filter: none;
+}
+
+.tabs li.tabs-selected a.tabs-inner {
+  color: #FFFFFF;
+  background: #00479D;
+  border-bottom: 0;
+  filter: none;
+}
+
+.tabs-panels {
+	border: 0;
+	border-top: 2px solid #00479D;
+}
+
+.l-btn-icon.fa {
+	font-size: 14px;
+}
+
+.l-btn-icon {
+  margin-top: -7px;
+}
+
+.l-btn-plain {
+  padding: 0;
+}
+

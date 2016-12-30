@@ -1,0 +1,157 @@
+.datagrid-toolbar {
+	padding: 0;
+}
+
+.datagrid-toolbar .controls,
+.datagrid-toolbar .criterias {
+}
+
+.datagrid-toolbar .controls {
+/* 	font-size: 0; */
+	padding: 4px 5px;
+	height: 26px;
+	border-bottom: 1px solid #dddddd;
+}
+
+.datagrid-toolbar .controls  .l-btn {
+  color: #FFF;
+  background: #4F91CB;
+  filter: none;
+  -moz-border-radius: 2px 2px 2px 5px;
+  -webkit-border-radius: 2px 2px 2px 2px;
+  border-radius: 2px 2px 2px 2px;
+  border: 1px solid transparent;
+}
+
+.datagrid-toolbar .controls  .l-btn:hover {
+	background: #9CC1E2;
+}
+
+.datagrid-toolbar .controls .l-btn-plain,
+.datagrid-toolbar .controls .l-btn-plain:hover {
+  background: #ccc;
+}
+
+
+.datagrid-toolbar .controls .l-btn-plain-selected,
+.datagrid-toolbar .controls .l-btn-plain-selected:hover {
+  background: #4F91CB;
+}
+
+
+.datagrid-toolbar .criterias {
+	position: relative; /*for IE6*/
+	max-height: 84px;
+	overflow: auto;
+	background-color: #ffffff;
+	padding: 3px 4px;
+}
+
+.my-combo-dropdown label {
+	display: block;
+	padding: 2px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.my-combo-dropdown label input,
+.my-combo-dropdown label span {
+	vertical-align: middle;
+}
+
+.my-combo-dropdown label span {
+}
+
+.my-combo-dropdown label.active {
+	background-color: #3399FF;
+	color: #FFFFFF;
+}
+
+.my-combo-dropdown label input {
+	color: #FFFFFF;
+}
+
+.attribute-item,
+.attribute-label,
+.attribute-control,
+.attribute-text {
+	display: inline-block;
+	*zoom: 1;  /*for IE6*/
+	*display: inline; /*for IE6*/
+	vertical-align: middle;
+}
+.attribute-item {
+	padding: 2px 0;
+}
+
+.attribute-label,
+.attribute-control,
+.attribute-text {
+	padding: 1px 2px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.attribute-label {
+	width: 80px;
+	text-align: right;
+	color: #888;
+}
+
+.attribute-text {
+	width: 160px;
+	text-align: left;
+}
+
+.my-date-dropdown label {
+	margin: 5px 0 0 5px;
+	display: block;
+}
+
+.window .datagrid-wrap {
+	border: 0;
+}
+
+fieldset {
+	border: 1px solid #95B8E7;
+	margin-bottom: 10px;
+}
+
+.datagrid-mask {
+	zoom:1 /*http://kevinpeng.iteye.com/blog/1056302*/
+	/*filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";*/
+}
+
+.datagrid-wrap {
+	overflow: hidden;
+}
+
+.datagrid-header-row td {
+	text-align: center;
+	font-weight: bold;
+	color: #666;
+	height: 26px;
+}
+
+/* datagrid */
+/* .panel-header, */
+/* .panel-body { */
+/*   border-color: #D9D9D9; */
+/* } */
+
+.datagrid-header,
+.datagrid-td-rownumber {
+  background: #efefef;
+  filter: none;
+}
+
+.datagrid-header {
+	font-weight: bold;
+}
+
+.datagrid-header-row td {
+	padding: 4px 0;
+}
+

@@ -1,32 +1,61 @@
 package com.hy.model.easyui;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by yyy1867 on 2016/12/30.
  */
-public class EasyUIDatagrid {
+public class EasyUIDatagrid implements Serializable {
 
     private String title;
     private List<EasyUIDatagridCloumn> columns;
-    private List<EasyUIDatagridCloumn> frozenColumns;
     private String toolbar;
     private Boolean striped;
     private String url;
-    private List<Object> data;
+    private List data;
     private Boolean singleSelect;
     private Boolean rownumbers;
     private Boolean checkOnSelect;
     private Boolean selectOnCheck;
     private Boolean pagination;
+    private Boolean fit;
+    private Boolean fitColumns;
 
     public EasyUIDatagrid() {
+        init();
     }
 
-    public EasyUIDatagrid(String title, List<EasyUIDatagridCloumn> columns, List<Object> data) {
+    public EasyUIDatagrid(String title, List<EasyUIDatagridCloumn> columns, List data) {
+        init();
         this.title = title;
         this.columns = columns;
         this.data = data;
+    }
+
+    private void init() {
+        this.fit = true;
+        this.fitColumns = true;
+        this.pagination = false;
+        this.rownumbers = false;
+        this.selectOnCheck = true;
+        this.checkOnSelect = true;
+    }
+
+    public Boolean getFit() {
+        return fit;
+    }
+
+    public void setFit(Boolean fit) {
+        this.fit = fit;
+    }
+
+    public Boolean getFitColumns() {
+        return fitColumns;
+    }
+
+    public void setFitColumns(Boolean fitColumns) {
+        this.fitColumns = fitColumns;
     }
 
     public String getTitle() {
@@ -43,14 +72,6 @@ public class EasyUIDatagrid {
 
     public void setColumns(List<EasyUIDatagridCloumn> columns) {
         this.columns = columns;
-    }
-
-    public List<EasyUIDatagridCloumn> getFrozenColumns() {
-        return frozenColumns;
-    }
-
-    public void setFrozenColumns(List<EasyUIDatagridCloumn> frozenColumns) {
-        this.frozenColumns = frozenColumns;
     }
 
     public String getToolbar() {
@@ -77,11 +98,11 @@ public class EasyUIDatagrid {
         this.url = url;
     }
 
-    public List<Object> getData() {
+    public List getData() {
         return data;
     }
 
-    public void setData(List<Object> data) {
+    public void setData(List data) {
         this.data = data;
     }
 

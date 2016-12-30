@@ -1,0 +1,10 @@
+Equal = 21;
+NotEqual = 22;
+Like = 23;
+Greaterthan = 24;
+Lessthan = 25;
+LessthanOrEqual = 26;
+GreaterthanOrEqual = 27;
+In = 30;
+Between =  33;
+NativeSql = 40;

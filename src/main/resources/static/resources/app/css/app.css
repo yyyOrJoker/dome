@@ -1,0 +1,147 @@
+html, body {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}
+
+body,
+input,
+select,
+textarea {
+	font-family: 'Microsoft Yahei';
+	font-size: 12px;
+}
+
+select {
+	height: 22px;
+}
+
+a {
+	color: #00479D;
+	text-decoration: none;
+}
+.pull-right {
+	float: right;
+}
+
+.pull-left {
+	float: left;
+}
+
+.banner-header {
+	padding: 4px 30px;;
+	vertical-align: middle;
+	position: relative;
+}
+
+.banner-header img {
+	vertical-align: middle;
+}
+
+.banner-user {
+	position: absolute;
+	right: 20px;
+	top: 50%;
+	margin-top: -8px;
+}
+
+.user {
+	color: #FF6300;
+}
+
+.banner .panel-body {
+	background: #555;
+	border: 0;
+}
+
+.banner .l-btn-text {
+	color: white;
+	font-size: 12px;
+}
+
+.banner .l-btn-icon {
+  color: #FFFFFF;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  position: absolute;
+  top: 50%;
+  margin-top: -8px;
+  font-size: 14px;
+}
+
+.banner .easyui-linkbutton,
+.banner .easyui-menubutton {
+	padding: 4px 6px;
+	border: 0;
+}
+
+.banner .l-btn:hover,
+.banner .l-btn-plain:hover {
+  padding: 4px 6px;
+  background-color: #333;
+  border: 0;
+  border-radius: 0;
+}
+
+.banner .m-btn-plain-active,
+.banner .s-btn-plain-active {
+  background: #333;
+  border-radius: 0;
+}
+
+.banner-menu {
+  background-color: #333;
+  border-color: #ddd;
+  color: #FFFFFF;
+}
+
+.banner-menu .menu-item {
+	padding: 2px;
+}
+
+.banner-menu .menu-item.menu-active {
+  border-color: #FFBD21;
+  color: #FFFFFF;
+  background: #FFBD21;
+  border-radius: 0;
+}
+
+.banner-menu .menu-line {
+  border-left: 0;
+  border-right: 1px solid #fff;
+}
+
+.banner-menu .menu-sep {
+  border-top: 0;
+  border-bottom: 1px solid #fff;
+}
+
+.banner-menu .menu-icon {
+	font-size: 14px;
+	margin-left: 2px;
+}
+
+.breadcrumb {
+ 	background: #F4F4F4;
+ 	border-style:  solid none solid none;
+ 	border-width: 1px;
+ 	border-color: #D9D9D9;
+ 	padding: 4px 20px;
+ 	color: #999;
+}
+
+.footer {
+	background: #F4F4F4;
+	border-style:  solid none none none;
+ 	border-width: 1px;
+ 	border-color: #D9D9D9;
+ 	width: 100%;
+ 	height: 17px;
+ 	padding: 4px 0;
+ 	color: #999;
+ 	text-align: right;
+/*  	position: absolute; */
+/*  	bottom: 0; */
+}
