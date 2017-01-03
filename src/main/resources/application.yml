@@ -12,4 +12,4 @@ spring:
     show-sql: true
   freemarker:
     charset: utf-8
-    template-loader-path: /moban/
+    template-loader-path: classpath:/templates/

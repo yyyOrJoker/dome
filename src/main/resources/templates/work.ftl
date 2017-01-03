@@ -22,8 +22,6 @@
     'checkOnSelect': false,
     'selectOnCheck': false,
     'toolbar': '#workEditToolbar',
-    'url':'table',
-    'queryParams':{'year':2016,'day':52},
     'columns': [[
         {'title': '选择', 'field': 'Id', 'width': 100, 'align': 'center', 'halign': 'center', 'checkbox': true},
         {'title': '项目名称', 'field': 'projectName', 'width': 100, 'align': 'center', 'halign': 'center'},
@@ -41,46 +39,46 @@
 "></table>
 
 <div id="workEditToolbar">
-    <form id="workEditToolbarForm">
-        <div>
-            <label>年: <input type="text" class="easyui-numberbox" name="year" data-options="min:1970,max:2100,width:75"
-                             value="2016"> </label>
-            <label>周: <input type="text" class="easyui-numberbox" name="day" data-options="min:1,max:53,width:75"
-                             value="52"> </label>
-            <label><a type="button" class="easyui-linkbutton" iconCls="icon-search">查询</a></label>
-            <a type="button" class="easyui-linkbutton">上周</a>
-            <a type="button" class="easyui-linkbutton">下周</a>
-            <a type="button" class="easyui-linkbutton">保存</a>
-            <a type="button" class="easyui-linkbutton">提交</a>
-            <a type="button" class="easyui-linkbutton">被拒绝的工时信息</a>
-        </div>
-        <div>
-            <label>项目:
-                <select class="easyui-combobox" data-options="
+    <div>
+        <label>年: <input type="text" class="easyui-numberbox" name="year" data-options="min:1970,max:2100,width:75">
+        </label>
+        <label>周: <input type="text" class="easyui-numberbox" name="day" data-options="min:1,max:53,width:75"> </label>
+        <label><a type="button" class="easyui-linkbutton">查询</a></label>
+        <a type="button" class="easyui-linkbutton">上周</a>
+        <a type="button" class="easyui-linkbutton">下周</a>
+        <a type="button" class="easyui-linkbutton">保存</a>
+        <a type="button" class="easyui-linkbutton">提交</a>
+        <a type="button" class="easyui-linkbutton">被拒绝的工时信息</a>
+        <a type="button" class="easyui-linkbutton">添加工时</a>
+    </div>
+    <div>
+        <label>项目:
+            <select class="easyui-combobox" data-options="
                     width:100,
                     panelHeight:'auto',
+                    mode: 'remote',
                     url: 'findAllprojects',
-                    valueField: 'id',
+                    idField: 'id',
                     textField: 'name',
                     method: 'get'
             "></select>
-            </label>
-            <label>
-                任务:
-                <select class="easyui-combobox" data-options="
+        </label>
+        <label>
+            任务:
+            <select class="easyui-combobox" data-options="
                     width:100,
+                    panelHeight:'auto',
                     url:'findAllcatalogs',
-                    valueField: 'id',
+                    mode: 'remote',
+                    idField: 'id',
                     textField: 'name',
                     method: 'get'
             "></select>
-            </label>
-            <label>服务地点:<input type="text" class="easyui-textbox" data-options="width:100"></label>
-            <label>结算方式:<input type="text" class="easyui-textbox" data-options="width:100"></label>
-            <label>是否净价:<input type="text" class="easyui-textbox" data-options="width:100"></label>
-            <a type="button" class="easyui-linkbutton">添加工时</a>
-        </div>
-    </form>
+        </label>
+        <label>服务地点:<input type="text" class="easyui-textbox" data-options="width:100"></label>
+        <label>结算方式:<input type="text" class="easyui-textbox" data-options="width:100"></label>
+        <label>是否净价:<input type="text" class="easyui-textbox" data-options="width:100"></label>
+    </div>
 </div>
 
 </div>

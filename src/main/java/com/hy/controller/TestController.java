@@ -1,19 +1,18 @@
 package com.hy.controller;
 
 import com.hy.model.domain.CmTimesheet;
-import com.hy.model.easyui.EasyUIData;
 import com.hy.model.easyui.EasyUIDatagrid;
 import com.hy.service.TestEasyUIService;
+import com.hy.service.TestEasyUIServiceImpl;
 import com.hy.service.jpa.CmProjectRepostory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
 import java.util.List;
@@ -28,7 +27,7 @@ public class TestController {
 
 
     @Autowired
-    TestEasyUIService testEasyUIService;
+    TestEasyUIService testEasyUIServiceImpl;
     @Autowired
     CmProjectRepostory cmProjectRepostory;
 
@@ -47,27 +46,33 @@ public class TestController {
     @GetMapping("/add")
     @ResponseBody
     public List<CmTimesheet> addWorkSheet(Model model) throws ParseException {
-        return testEasyUIService.addWorkSheet(USERID, 1, 6, "shanghai", 1, 1, "2016", "52");
+        return testEasyUIServiceImpl.addWorkSheet(USERID, 1, 6, "shanghai", 1, 1, 2016, 52);
     }
 
     @RequestMapping("/table")
     @ResponseBody
-    public EasyUIDatagrid getWorkSheetEdit(ModelMap map) {
-        System.out.println(map.size());
-        System.out.println(map);
-        return testEasyUIService.loadEasyuiDataGrid(USERID, "2016", "52");
+    public List getWorkSheetEdit(@RequestParam("year") Integer year, @RequestParam("day") Integer e) {
+        return testEasyUIServiceImpl.loadAllWorkSheet(USERID, year, e);
     }
 
     @GetMapping("/test")
-    public String test() {
+    public String test(ModelMap map) {
         System.out.println("dao");
-        return "index";
+
+        return "work";
     }
 
     @RequestMapping("/findAllprojects")
     @ResponseBody
     public List findAllprojects() {
-        List<Map<String, Object>> list = testEasyUIService.loadAllprojects();
+        List<Map<String, Object>> list = testEasyUIServiceImpl.loadAllprojects("");
+        return list;
+    }
+
+    @RequestMapping("/findAllcatalogs")
+    @ResponseBody
+    public List findAllcatalogs() {
+        List<Map<String, Object>> list = testEasyUIServiceImpl.loadAllCatalogs(0, "");
         return list;
     }
 }
