@@ -2,12 +2,17 @@
  * Created by yyy1867 on 2016/12/30.
  */
 $(function () {
+    var table = $("#workEditTable");
 
-    var table = $("table")[0];
-    console.info(table);
+    laodWorkEdit();
+    laodWorkEditToolbar();
 
-    $.getJSON("/table", {}, function (data) {
-        console.info(data);
-        $(table).datagrid(data);
-    });
+    function laodWorkEdit() {
+
+    }
+
+    function laodWorkEditToolbar() {
+
+    }
+
 });

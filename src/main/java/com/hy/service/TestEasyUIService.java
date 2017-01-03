@@ -8,6 +8,7 @@ import com.hy.model.easyui.EasyUIDatagridCloumn;
 import com.hy.service.jpa.CmCatalogRepostory;
 import com.hy.service.jpa.CmProjectRepostory;
 import com.hy.service.jpa.CmTimesheetRepostory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +23,13 @@ import java.util.*;
 @Service
 public class TestEasyUIService {
 
+    public static final Logger log = Logger.getLogger(TestEasyUIService.class);
+
     public static final SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
     public static final SimpleDateFormat yyyyMMddE = new SimpleDateFormat("yyyy-MM-dd E", Locale.CHINA);
+
+    public static final String DAY_TEXT_PREFIX = "dayText";
+    public static final String DAY_PREFIX = "day";
 
     @Autowired
     CmTimesheetRepostory cmTimesheetRepostory;
@@ -32,19 +38,13 @@ public class TestEasyUIService {
     @Autowired
     CmCatalogRepostory cmCatalogRepostory;
 
-    public EasyUIDatagrid loadEasyuiDataGrid() {
-        List<EasyUIDatagridCloumn> cloumns = loadWorkTimeCloumns();
-        List<CmTimesheet> data = new LinkedList<CmTimesheet>();
-        EasyUIDatagrid datagrid = new EasyUIDatagrid("工时填报", cloumns, data);
-        return datagrid;
-    }
-
+    //添加一周的工时
     @Transactional
     public List<CmTimesheet> addWorkSheet(int userId, int pojectId, int catalogId, String addr, int netprice, int settle, String yyyy, String e) throws ParseException {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(getWeekByOneDay(yyyy, e));
         List<CmTimesheet> data = new LinkedList<CmTimesheet>();
-        Integer ordinal = cmTimesheetRepostory.getMaxToOrdinal();
+        Integer ordinal = cmTimesheetRepostory.getMaxToOrdinal(userId);
         if (ordinal == null) {
             ordinal = 0;
         }
@@ -59,7 +59,6 @@ public class TestEasyUIService {
             cmTimesheet.setSettleId(settle);
             cmTimesheet.setOrdinal(ordinal);
             cmTimesheet.setEditDate(calendar.getTime());
-//            cmTimesheet.setNotes(yyyyMMddE.format(calendar.getTime()));
             calendar.add(Calendar.DAY_OF_YEAR, 1);
             data.add(cmTimesheet);
         }
@@ -67,7 +66,45 @@ public class TestEasyUIService {
         return data;
     }
 
-    private static Date getWeekByOneDay(String yyyy, String e) throws ParseException {
+    //获取该用户的所有工时
+    public List<Map<String, Object>> loadAllWorkSheet(int userId) {
+        List<Integer> ordinalIds = cmTimesheetRepostory.getOrdinalGroupByOrdinalByUserId(userId);
+        List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
+        for (int i = 0; i < ordinalIds.size(); i++) {
+            List<CmTimesheet> timesheets = cmTimesheetRepostory.findByUserIdAndOrdinalOrderByEditDate(userId, ordinalIds.get(i));
+            list.add(parseMap(timesheets));
+        }
+        return list;
+    }
+
+    //获取全部项目
+    public List<Map<String, Object>> loadAllprojects() {
+        List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
+        List<CmProject> data = cmProjectRepostory.findAll();
+        for (int i = 0; i < data.size(); i++) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("id", data.get(i).getId());
+            map.put("name", data.get(i).getName());
+            list.add(map);
+        }
+        return list;
+    }
+
+    //获取全部任务目录
+    public List<Map<String, Object>> loadAllCatalogs() {
+        List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
+        List<CmCatalog> data = cmCatalogRepostory.findAll();
+        for (int i = 0; i < data.size(); i++) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("id", data.get(i).getId());
+            map.put("name", data.get(i).getName());
+            list.add(map);
+        }
+        return list;
+    }
+
+    //获取yyyy年第e周的第一天的日期
+    private Date getWeekByOneDay(String yyyy, String e) throws ParseException {
         int ee = Integer.parseInt(e);
         if (ee < 1 || ee > 53) {
             throw new RuntimeException("周的范围取值不正确...");
@@ -84,35 +121,26 @@ public class TestEasyUIService {
         return c.getTime();
     }
 
-    private List<EasyUIDatagridCloumn> loadWorkTimeCloumns() {
-        List<EasyUIDatagridCloumn> cloumns = new LinkedList<EasyUIDatagridCloumn>();
-        cloumns.add(new EasyUIDatagridCloumn("项目名称", "projectName", 100));
-        cloumns.add(new EasyUIDatagridCloumn("任务名称", "catalogId", 100));
-        cloumns.add(new EasyUIDatagridCloumn("服务地点", "address", 100));
-        cloumns.add(new EasyUIDatagridCloumn("服务地点", "settle", 100));
-        cloumns.add(new EasyUIDatagridCloumn("星期一", "monday", 100));
-        cloumns.add(new EasyUIDatagridCloumn("星期二", "tuesday", 100));
-        cloumns.add(new EasyUIDatagridCloumn("星期三", "wednesday", 100));
-        cloumns.add(new EasyUIDatagridCloumn("星期四", "thursday", 100));
-        cloumns.add(new EasyUIDatagridCloumn("星期五", "friday", 100));
-        cloumns.add(new EasyUIDatagridCloumn("星期六", "saturday", 100));
-        cloumns.add(new EasyUIDatagridCloumn("星期日", "sunday", 100));
-        return cloumns;
-    }
-
-    private List<Map<String, Object>> parseMap(List<CmTimesheet> data) {
-        List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
-        for (CmTimesheet timesheet : data) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("projectId", timesheet.getProject().getId());
-            map.put("projectName", timesheet.getProject().getName());
-            map.put("catalogId", timesheet.getCatalog().getId());
-            map.put("catalogName", timesheet.getCatalog().getName());
-            map.put("address", timesheet.getAddress());
-            map.put("settle", timesheet.getSettleId());
-            list.add(map);
+    //将一周的工时转换为一个对象
+    private Map<String, Object> parseMap(List<CmTimesheet> data) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        CmTimesheet timesheet = data.get(0);
+        map.put("ordinal", timesheet.getOrdinal());
+        map.put("projectId", timesheet.getProject().getId());
+        map.put("projectName", timesheet.getProject().getName());
+        map.put("catalogId", timesheet.getCatalog().getId());
+        map.put("catalogName", timesheet.getCatalog().getName());
+        map.put("address", timesheet.getAddress());
+        map.put("settle", timesheet.getSettleId());
+        map.put("netprice", timesheet.getSettleId());
+        for (CmTimesheet t : data) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(t.getEditDate());
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+            map.put(DAY_TEXT_PREFIX + day, t.getWorktime());
+            map.put(DAY_PREFIX + day, t.getWorktime());
         }
-        return list;
+        return map;
     }
 
 

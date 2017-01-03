@@ -9,4 +9,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface CmCatalogRepostory extends JpaRepository<CmCatalog, Integer> {
+
 }

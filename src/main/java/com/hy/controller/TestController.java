@@ -1,8 +1,10 @@
 package com.hy.controller;
 
 import com.hy.model.domain.CmTimesheet;
+import com.hy.model.easyui.EasyUIData;
 import com.hy.model.easyui.EasyUIDatagrid;
 import com.hy.service.TestEasyUIService;
+import com.hy.service.jpa.CmProjectRepostory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class TestController {
@@ -26,6 +29,8 @@ public class TestController {
 
     @Autowired
     TestEasyUIService testEasyUIService;
+    @Autowired
+    CmProjectRepostory cmProjectRepostory;
 
     @GetMapping("/")
     public String index() {
@@ -42,7 +47,7 @@ public class TestController {
     @GetMapping("/add")
     @ResponseBody
     public List<CmTimesheet> addWorkSheet(Model model) throws ParseException {
-        return testEasyUIService.addWorkSheet(1, 1, 6, "shanghai", 1, 1, "2016", "52");
+        return testEasyUIService.addWorkSheet(USERID, 1, 6, "shanghai", 1, 1, "2016", "52");
     }
 
     @RequestMapping("/table")
@@ -50,12 +55,19 @@ public class TestController {
     public EasyUIDatagrid getWorkSheetEdit(ModelMap map) {
         System.out.println(map.size());
         System.out.println(map);
-        return testEasyUIService.loadEasyuiDataGrid();
+        return testEasyUIService.loadEasyuiDataGrid(USERID, "2016", "52");
     }
 
     @GetMapping("/test")
     public String test() {
         System.out.println("dao");
         return "index";
+    }
+
+    @RequestMapping("/findAllprojects")
+    @ResponseBody
+    public List findAllprojects() {
+        List<Map<String, Object>> list = testEasyUIService.loadAllprojects();
+        return list;
     }
 }
