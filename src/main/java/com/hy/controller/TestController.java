@@ -1,5 +1,6 @@
 package com.hy.controller;
 
+import com.hy.model.WorkFrom;
 import com.hy.model.domain.CmTimesheet;
 import com.hy.model.easyui.EasyUIDatagrid;
 import com.hy.service.TestEasyUIService;
@@ -45,8 +46,8 @@ public class TestController {
 
     @GetMapping("/add")
     @ResponseBody
-    public List<CmTimesheet> addWorkSheet(Model model) throws ParseException {
-        return testEasyUIServiceImpl.addWorkSheet(USERID, 1, 6, "shanghai", 1, 1, 2016, 52);
+    public Map addWorkSheet(WorkFrom frm) throws ParseException {
+        return testEasyUIServiceImpl.addWorkSheet(USERID, frm);
     }
 
     @RequestMapping("/table")

@@ -1,6 +1,6 @@
 package com.hy.service;
 
-import com.hy.model.domain.CmTimesheet;
+import com.hy.model.WorkFrom;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -13,7 +13,7 @@ import java.util.Map;
 public interface TestEasyUIService {
 
     //添加一周的工时
-    List<CmTimesheet> addWorkSheet(int userId, int projectId, int catalogId, String address, int settleId, int netpriceId, int yyyy, int e) throws ParseException;
+    Map<String, Object> addWorkSheet(int userId, WorkFrom frm) throws ParseException;
 
     //查询所有项目
     List<Map<String, Object>> loadAllprojects(String p);

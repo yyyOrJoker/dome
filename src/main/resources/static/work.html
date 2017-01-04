@@ -47,16 +47,16 @@
                              value="2016"> </label>
             <label>周: <input type="text" class="easyui-numberbox" name="day" data-options="min:1,max:53,width:75"
                              value="52"> </label>
-            <label><a type="button" class="easyui-linkbutton" iconCls="icon-search">查询</a></label>
-            <a type="button" class="easyui-linkbutton">上周</a>
-            <a type="button" class="easyui-linkbutton">下周</a>
+            <label><a type="button" class="easyui-linkbutton" iconCls="icon-search" ws-click="refreshDatagrid()">查询</a></label>
+            <a type="button" class="easyui-linkbutton" ws-click="nextDays(-1)">上周</a>
+            <a type="button" class="easyui-linkbutton" ws-click="nextDays(1)">下周</a>
             <a type="button" class="easyui-linkbutton">保存</a>
             <a type="button" class="easyui-linkbutton">提交</a>
             <a type="button" class="easyui-linkbutton">被拒绝的工时信息</a>
         </div>
         <div>
             <label>项目:
-                <select class="easyui-combobox" data-options="
+                <select class="easyui-combobox" name="project" data-options="
                     width:100,
                     panelHeight:'auto',
                     url: 'findAllprojects',
@@ -67,7 +67,7 @@
             </label>
             <label>
                 任务:
-                <select class="easyui-combobox" data-options="
+                <select class="easyui-combobox" name="catalog" data-options="
                     width:100,
                     url:'findAllcatalogs',
                     valueField: 'id',
@@ -75,10 +75,10 @@
                     method: 'get'
             "></select>
             </label>
-            <label>服务地点:<input type="text" class="easyui-textbox" data-options="width:100"></label>
-            <label>结算方式:<input type="text" class="easyui-textbox" data-options="width:100"></label>
-            <label>是否净价:<input type="text" class="easyui-textbox" data-options="width:100"></label>
-            <a type="button" class="easyui-linkbutton">添加工时</a>
+            <label>服务地点:<input type="text" name="address" class="easyui-textbox" data-options="width:100"></label>
+            <label>结算方式:<input type="text" name="settle" class="easyui-textbox" data-options="width:100"></label>
+            <label>是否净价:<input type="text" name="netprice" class="easyui-textbox" data-options="width:100"></label>
+            <a type="button" class="easyui-linkbutton" ws-click="addDays()">添加工时</a>
         </div>
     </form>
 </div>

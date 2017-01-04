@@ -1,5 +1,6 @@
 package com.hy.service;
 
+import com.hy.model.WorkFrom;
 import com.hy.model.domain.CmCatalog;
 import com.hy.model.domain.CmProject;
 import com.hy.model.domain.CmTimesheet;
@@ -39,9 +40,9 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
     //添加一周的工时
     @Transactional
     @Override
-    public List<CmTimesheet> addWorkSheet(int userId, int pojectId, int catalogId, String addr, int netprice, int settle, int yyyy, int e) throws ParseException {
+    public Map<String, Object> addWorkSheet(int userId, WorkFrom frm) throws ParseException {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(getWeekByOneDay(yyyy, e));
+        calendar.setTime(getWeekByOneDay(frm.getYear(), frm.getDay()));
         List<CmTimesheet> data = new LinkedList<CmTimesheet>();
         Integer ordinal = cmTimesheetRepostory.getMaxToOrdinal(userId);
         if (ordinal == null) {
@@ -51,35 +52,34 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
         for (int i = 0; i < 7; i++) {
             CmTimesheet cmTimesheet = new CmTimesheet();
             cmTimesheet.setUserId(userId);
-            cmTimesheet.setProject(cmProjectRepostory.findOne(pojectId));
-            cmTimesheet.setCatalog(cmCatalogRepostory.findOne(catalogId));
-            cmTimesheet.setAddress(addr);
-            cmTimesheet.setNetpriceId(netprice);
-            cmTimesheet.setSettleId(settle);
+            cmTimesheet.setProject(cmProjectRepostory.findOne(frm.getProject()));
+            cmTimesheet.setCatalog(cmCatalogRepostory.findOne(frm.getCatalog()));
+            cmTimesheet.setAddress(frm.getAddress());
+            cmTimesheet.setNetpriceId(frm.getNetprice());
+            cmTimesheet.setSettleId(frm.getSettle());
             cmTimesheet.setOrdinal(ordinal);
             cmTimesheet.setEditDate(calendar.getTime());
+            cmTimesheet.setWorktime(0);
             calendar.add(Calendar.DAY_OF_YEAR, 1);
             data.add(cmTimesheet);
         }
-        cmTimesheetRepostory.save(data);
-        return data;
+        //cmTimesheetRepostory.save(data);
+        return parseMap(data);
     }
 
     //获取该用户的所有工时
     @Override
     public List<Map<String, Object>> loadAllWorkSheet(int userId, int yyyy, int e) {
-        String str = "";
-        String end = "";
+        Date str = null;
         try {
-            str = yyyyMMdd.format(getWeekByOneDay(yyyy, e));
-            end = yyyyMMdd.format(getWeekByOneDay(yyyy, e + 1));
+            str = getWeekByOneDay(yyyy, e);
         } catch (ParseException e1) {
             e1.printStackTrace();
         }
-        List<Object> ordinalIds = cmTimesheetRepostory.getOrdinalGroupByOrdinalByUserId(userId, str, end);
+        List<CmTimesheet> ordinalIds = cmTimesheetRepostory.findByEditDateAndUserId(str, userId);
         List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
         for (int i = 0; i < ordinalIds.size(); i++) {
-            List<CmTimesheet> timesheets = cmTimesheetRepostory.findByUserIdAndOrdinalOrderByEditDate(userId, (Integer) ordinalIds.get(i));
+            List<CmTimesheet> timesheets = cmTimesheetRepostory.findByUserIdAndOrdinalOrderByEditDate(userId, ordinalIds.get(i).getOrdinal());
             list.add(parseMap(timesheets));
         }
         return list;
