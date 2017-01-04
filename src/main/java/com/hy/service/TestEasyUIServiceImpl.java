@@ -169,8 +169,10 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(t.getEditDate());
             int day = calendar.get(Calendar.DAY_OF_WEEK);
-            map.put(DAY_TEXT_PREFIX + day, t.getWorktime());
-            map.put(DAY_PREFIX + day, t);
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("data", t);
+            param.put("text", t.getWorktime());
+            map.put(DAY_PREFIX + day, param);
         }
         return map;
     }

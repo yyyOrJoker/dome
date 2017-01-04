@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public interface CmTimesheetRepostory extends JpaRepository<CmTimesheet, Integer> {
 
-    @Query(value = "select max(ordinal) from CmTimesheet where userId=?1", nativeQuery = true)
+    @Query(value = "select max(ordinal) from CmTimesheet where userId=?1")
     Integer getMaxToOrdinal(Integer userId);
 
     @Query(value = "select ordinal from CmTimesheet where userId=?1 and editDate>=?2 and editDate < ?3 group by ordinal", nativeQuery = false)

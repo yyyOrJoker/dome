@@ -4,12 +4,25 @@
 $(function () {
     var table = $("#workEditTable");
     var addDaysUrl = "add";
+    var tableUrl = "table";
+    var tableOptionsUrl = "workedit.json";
+    var specialFiledName = "text";
+    var specialFiledData = "text";
+    var pmstatusFiledData = "pmstatus";
+    var dmstatusFiledData = "dmstatus";
+    var iscommitFiledData = "iscommit";
 
 
     laodWorkEdit();
-    laodWorkEditToolbar();
+    // laodWorkEditToolbar();
+    // refreshDatagrid();
 
     function laodWorkEdit() {
+        jQuery.getJSON(tableOptionsUrl, undefined, function (data) {
+            console.info(data);
+            table.datagrid(loadDatagridOptions(data));
+        });
+
         $("#workEditToolbar a").click(function (a) {
             var ev = $(this).attr("ws-click");
             if (ev) {
@@ -22,10 +35,41 @@ $(function () {
 
     }
 
+    function loadDatagridOptions(data) {
+        for (var i = 0; i < data.columns[0].length; i++) {
+            //对象的显示方法
+            data.columns[0][i].formatter = function (value, row, index) {
+                if (value && value.hasOwnProperty(specialFiledName)) {
+                    return value[specialFiledName];
+                }
+                return value;
+            };
+            //不同状态的背景色
+            data.columns[0][i].styler = function (value, row, index) {
+                if (value && value.hasOwnProperty(specialFiledData)) {
+                    if (value[specialFiledData][pmstatusFiledData] && value[specialFiledData][dmstatusFiledData]) {
+                        return "";
+                    } else if (!value[specialFiledData][pmstatusFiledData] || !value[specialFiledData][dmstatusFiledData]) {
+                        return "";
+                    } else if (value[specialFiledData][iscommitFiledData]) {
+                        return "";
+                    }
+                }
+            };
+        }
+        //选中单元格时编辑该单元格内容
+        data.onClickCell = function (rowIndex, field, value) {
+            if (value.hasOwnProperty(specialFiledData)) {
+                console.info(value)
+            }
+        };
+        return data;
+    }
+
     function addDays() {
         var frm = getFrom();
         jQuery.get(addDaysUrl, frm, function (data) {
-            console.info(data);
+            table.datagrid("appendRow", data);
         });
     }
 
@@ -46,6 +90,7 @@ $(function () {
     function refreshDatagrid() {
         var frm = getFrom();
         table.datagrid({
+            url: tableUrl,
             queryParams: {
                 "year": frm.year,
                 "day": frm.day
@@ -62,7 +107,6 @@ $(function () {
         frm.settle = $(":input[name='settle']:eq(0)").val();
         frm.address = $(":input[name='address']:eq(0)").val();
         frm.netprice = $(":input[name='netprice']:eq(0)").val();
-        console.info(frm);
         return frm;
     }
 
