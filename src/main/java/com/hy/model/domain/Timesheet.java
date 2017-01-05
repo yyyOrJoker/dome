@@ -7,14 +7,15 @@ import java.util.Date;
  * Created by yyy1867 on 2016/12/30.
  */
 @Entity
-public class CmTimesheet extends BaseDomain {
+@Table(name = "cm_timesheet")
+public class Timesheet extends BaseDomain {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "project_id")
-    protected CmProject project;
+    protected Project project;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "catalog_id")
-    protected CmCatalog catalog;
+    protected Catalog catalog;
     protected String address;
     protected Integer settleId;
     protected Integer netpriceId;
@@ -30,19 +31,19 @@ public class CmTimesheet extends BaseDomain {
     protected Boolean pmstatus;
     protected Boolean dmstatus;
 
-    public CmProject getProject() {
+    public Project getProject() {
         return project;
     }
 
-    public void setProject(CmProject project) {
+    public void setProject(Project project) {
         this.project = project;
     }
 
-    public CmCatalog getCatalog() {
+    public Catalog getCatalog() {
         return catalog;
     }
 
-    public void setCatalog(CmCatalog catalog) {
+    public void setCatalog(Catalog catalog) {
         this.catalog = catalog;
     }
 

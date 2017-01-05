@@ -1,20 +1,20 @@
 package com.hy.model.domain;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by yyy1867 on 2016/12/30.
  */
 @Entity
-public class CmProject extends BaseDomain {
+@Table(name = "cm_project")
+public class Project extends BaseDomain {
 
     protected Integer userId;
     protected Integer groupId;
 
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = CmCatalog.class)
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Catalog.class)
     @JoinColumn(name = "catalogId")
-    protected CmCatalog catalog;
+    protected Catalog catalog;
     protected Integer businessId;
     protected Integer costumerId;
     protected String partner;
@@ -38,11 +38,11 @@ public class CmProject extends BaseDomain {
         this.groupId = groupId;
     }
 
-    public CmCatalog getCatalog() {
+    public Catalog getCatalog() {
         return catalog;
     }
 
-    public void setCatalog(CmCatalog catalog) {
+    public void setCatalog(Catalog catalog) {
         this.catalog = catalog;
     }
 

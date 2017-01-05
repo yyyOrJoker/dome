@@ -1,17 +1,11 @@
 package com.hy.controller;
 
-import com.hy.model.FromList;
 import com.hy.model.WorkFrom;
-import com.hy.model.domain.CmTimesheet;
-import com.hy.model.easyui.EasyUIDatagrid;
+import com.hy.model.domain.Timesheet;
 import com.hy.service.TestEasyUIService;
-import com.hy.service.TestEasyUIServiceImpl;
-import com.hy.service.jpa.CmProjectRepostory;
-import freemarker.template.utility.StringUtil;
+import com.hy.service.jpa.ProjectRepostory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -19,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class TestController {
+public class WorkController {
 
     public final static int USERID = 1;
     public final static String USERNAME = "孤星";
@@ -29,7 +23,7 @@ public class TestController {
     @Autowired
     TestEasyUIService testEasyUIServiceImpl;
     @Autowired
-    CmProjectRepostory cmProjectRepostory;
+    ProjectRepostory projectRepostory;
 
     @GetMapping("/")
     public String index() {
@@ -65,9 +59,9 @@ public class TestController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public Integer saveWorktime(@RequestBody List<List<CmTimesheet>> list) {
+    public Integer saveWorktime(@RequestBody List<List<Timesheet>> list) {
         int count = 0;
-        for (List<CmTimesheet> cms : list) {
+        for (List<Timesheet> cms : list) {
             if (testEasyUIServiceImpl.saveDays(cms)) count++;
         }
         return count;
@@ -85,9 +79,9 @@ public class TestController {
 
     @RequestMapping("/submit")
     @ResponseBody
-    public Integer submitDays(@RequestBody List<List<CmTimesheet>> list) {
+    public Integer submitDays(@RequestBody List<List<Timesheet>> list) {
         int count = 0;
-        for (List<CmTimesheet> cms : list) {
+        for (List<Timesheet> cms : list) {
             if (testEasyUIServiceImpl.submitDays(cms)) count++;
         }
         return count;

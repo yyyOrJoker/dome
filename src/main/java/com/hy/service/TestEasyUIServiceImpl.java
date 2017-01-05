@@ -1,12 +1,12 @@
 package com.hy.service;
 
 import com.hy.model.WorkFrom;
-import com.hy.model.domain.CmCatalog;
-import com.hy.model.domain.CmProject;
-import com.hy.model.domain.CmTimesheet;
-import com.hy.service.jpa.CmCatalogRepostory;
-import com.hy.service.jpa.CmProjectRepostory;
-import com.hy.service.jpa.CmTimesheetRepostory;
+import com.hy.model.domain.Catalog;
+import com.hy.model.domain.Project;
+import com.hy.model.domain.Timesheet;
+import com.hy.service.jpa.CatalogRepostory;
+import com.hy.service.jpa.ProjectRepostory;
+import com.hy.service.jpa.TimesheetRepostory;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,19 +31,19 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
     public static final String EDITDAY_PREFIX = "editDays";
 
     @Autowired
-    CmTimesheetRepostory cmTimesheetRepostory;
+    TimesheetRepostory timesheetRepostory;
     @Autowired
-    CmProjectRepostory cmProjectRepostory;
+    ProjectRepostory projectRepostory;
     @Autowired
-    CmCatalogRepostory cmCatalogRepostory;
+    CatalogRepostory catalogRepostory;
 
     @Transactional
     @Override
-    public boolean saveDays(List<CmTimesheet> cms) {
+    public boolean saveDays(List<Timesheet> cms) {
         if (isExistsDays(cms)) {
-            for (CmTimesheet cm : cms) {
+            for (Timesheet cm : cms) {
                 if (cm.getIscommit() != null && cm.getIscommit()) continue;
-                cmTimesheetRepostory.saveAndFlush(cm);
+                timesheetRepostory.saveAndFlush(cm);
             }
             return true;
         }
@@ -52,28 +52,28 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
 
     @Transactional
     @Override
-    public boolean submitDays(List<CmTimesheet> cms) {
+    public boolean submitDays(List<Timesheet> cms) {
         if (isExistsDays(cms)) {
-            for (CmTimesheet cm : cms) {
+            for (Timesheet cm : cms) {
                 if (cm.getIscommit() != null && cm.getIscommit()) continue;
                 if (cm.getWorktime() != null && cm.getWorktime() > 0) {
                     cm.setIscommit(true);
                 }
-                cmTimesheetRepostory.saveAndFlush(cm);
+                timesheetRepostory.saveAndFlush(cm);
             }
             return true;
         }
         return false;
     }
 
-    private boolean isExistsDays(List<CmTimesheet> cms) {
+    private boolean isExistsDays(List<Timesheet> cms) {
         if (cms.size() == 7) {
             List<Integer> ids = new ArrayList<Integer>();
-            for (CmTimesheet t : cms) {
+            for (Timesheet t : cms) {
                 if (t.getId() == null) return false;
                 ids.add(t.getId());
             }
-            return cmTimesheetRepostory.findByIdIn(ids).size() == 7;
+            return timesheetRepostory.findByIdIn(ids).size() == 7;
         }
         return false;
     }
@@ -81,10 +81,10 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
     @Transactional
     @Override
     public Boolean delDays(List<Integer> ids) {
-        List<CmTimesheet> list = cmTimesheetRepostory.findByIdInAndIscommit(ids, null);
+        List<Timesheet> list = timesheetRepostory.findByIdInAndIscommit(ids, null);
         if (list.size() == 7) {
-            for (CmTimesheet cm : list) {
-                cmTimesheetRepostory.delete(cm);
+            for (Timesheet cm : list) {
+                timesheetRepostory.delete(cm);
             }
             return true;
         }
@@ -97,27 +97,27 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
     public Map<String, Object> addWorkSheet(int userId, WorkFrom frm) throws ParseException {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(getWeekByOneDay(frm.getYear(), frm.getDay()));
-        List<CmTimesheet> data = new LinkedList<CmTimesheet>();
-        Integer ordinal = cmTimesheetRepostory.getMaxToOrdinal(userId);
+        List<Timesheet> data = new LinkedList<Timesheet>();
+        Integer ordinal = timesheetRepostory.getMaxToOrdinal(userId);
         if (ordinal == null) {
             ordinal = 0;
         }
         ordinal++;
         for (int i = 0; i < 7; i++) {
-            CmTimesheet cmTimesheet = new CmTimesheet();
-            cmTimesheet.setUserId(userId);
-            cmTimesheet.setProject(cmProjectRepostory.findOne(frm.getProject()));
-            cmTimesheet.setCatalog(cmCatalogRepostory.findOne(frm.getCatalog()));
-            cmTimesheet.setAddress(frm.getAddress());
-            cmTimesheet.setNetpriceId(frm.getNetprice());
-            cmTimesheet.setSettleId(frm.getSettle());
-            cmTimesheet.setOrdinal(ordinal);
-            cmTimesheet.setEditDate(calendar.getTime());
-            cmTimesheet.setWorktime(0);
+            Timesheet timesheet = new Timesheet();
+            timesheet.setUserId(userId);
+            timesheet.setProject(projectRepostory.findOne(frm.getProject()));
+            timesheet.setCatalog(catalogRepostory.findOne(frm.getCatalog()));
+            timesheet.setAddress(frm.getAddress());
+            timesheet.setNetpriceId(frm.getNetprice());
+            timesheet.setSettleId(frm.getSettle());
+            timesheet.setOrdinal(ordinal);
+            timesheet.setEditDate(calendar.getTime());
+            timesheet.setWorktime(0);
             calendar.add(Calendar.DAY_OF_YEAR, 1);
-            data.add(cmTimesheet);
+            data.add(timesheet);
         }
-        cmTimesheetRepostory.save(data);
+        timesheetRepostory.save(data);
         return parseMap(data);
     }
 
@@ -130,10 +130,10 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
         } catch (ParseException e1) {
             e1.printStackTrace();
         }
-        List<CmTimesheet> ordinalIds = cmTimesheetRepostory.findByEditDateAndUserId(str, userId);
+        List<Timesheet> ordinalIds = timesheetRepostory.findByEditDateAndUserId(str, userId);
         List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
         for (int i = 0; i < ordinalIds.size(); i++) {
-            List<CmTimesheet> timesheets = cmTimesheetRepostory.findByUserIdAndOrdinalOrderByEditDate(userId, ordinalIds.get(i).getOrdinal());
+            List<Timesheet> timesheets = timesheetRepostory.findByUserIdAndOrdinalOrderByEditDate(userId, ordinalIds.get(i).getOrdinal());
             list.add(parseMap(timesheets));
         }
         return list;
@@ -143,7 +143,7 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
     @Override
     public List<Map<String, Object>> loadAllprojects(String p) {
         List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
-        List<CmProject> data = cmProjectRepostory.findAll();
+        List<Project> data = projectRepostory.findAll();
         for (int i = 0; i < data.size(); i++) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", data.get(i).getId());
@@ -160,7 +160,7 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
     @Override
     public List<Map<String, Object>> loadAllCatalogs(int projectId, String p) {
         List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
-        List<CmCatalog> data = cmCatalogRepostory.findAll();
+        List<Catalog> data = catalogRepostory.findAll();
         for (int i = 0; i < data.size(); i++) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", data.get(i).getId());
@@ -208,9 +208,9 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
     }
 
     //将一周的工时转换为一个对象
-    private Map<String, Object> parseMap(List<CmTimesheet> data) {
+    private Map<String, Object> parseMap(List<Timesheet> data) {
         Map<String, Object> map = new HashMap<String, Object>();
-        CmTimesheet timesheet = data.get(0);
+        Timesheet timesheet = data.get(0);
         map.put("ordinal", timesheet.getOrdinal());
         map.put("projectId", timesheet.getProject().getId());
         map.put("projectName", timesheet.getProject().getName());
@@ -219,7 +219,7 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
         map.put("address", timesheet.getAddress());
         map.put("settle", timesheet.getSettleId());
         map.put("netprice", timesheet.getNetpriceId());
-        for (CmTimesheet t : data) {
+        for (Timesheet t : data) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(t.getEditDate());
             int day = calendar.get(Calendar.DAY_OF_WEEK);
