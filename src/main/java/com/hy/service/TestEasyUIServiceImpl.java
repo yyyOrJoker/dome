@@ -27,7 +27,6 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
     public static final SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
     public static final SimpleDateFormat yyyyMMddE = new SimpleDateFormat("yyyy-MM-dd E", Locale.CHINA);
 
-    public static final String DAY_TEXT_PREFIX = "dayText";
     public static final String DAY_PREFIX = "day";
 
     @Autowired
@@ -164,7 +163,7 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
         map.put("catalogName", timesheet.getCatalog().getName());
         map.put("address", timesheet.getAddress());
         map.put("settle", timesheet.getSettleId());
-        map.put("netprice", timesheet.getSettleId());
+        map.put("netprice", timesheet.getNetpriceId());
         for (CmTimesheet t : data) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(t.getEditDate());

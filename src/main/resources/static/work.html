@@ -22,7 +22,7 @@
             <label><a type="button" class="easyui-linkbutton" iconCls="icon-search" ws-click="refreshDatagrid()">查询</a></label>
             <a type="button" class="easyui-linkbutton" ws-click="nextDays(-1)">上周</a>
             <a type="button" class="easyui-linkbutton" ws-click="nextDays(1)">下周</a>
-            <a type="button" class="easyui-linkbutton">保存</a>
+            <a type="button" class="easyui-linkbutton" ws-click="saveList()">保存</a>
             <a type="button" class="easyui-linkbutton">提交</a>
             <a type="button" class="easyui-linkbutton">被拒绝的工时信息</a>
         </div>
@@ -55,6 +55,39 @@
     </form>
 </div>
 
+<div id="workEditDialog" class="easyui-dialog" style="padding: 10px;" data-options="
+    title:'工时信息编辑',
+    width:300,
+    height:300,
+    closed:false
+">
+    <form id="workEditDialogFrm">
+        <table style="margin: 0px auto;">
+            <tr>
+                <td>日期:</td>
+                <td><input class="easyui-textbox" name="editDate" value="2017-01-04 星期三" disabled></td>
+            </tr>
+            <tr>
+                <td>工时:</td>
+                <td><input class="easyui-numberbox" name="worktime" data-options="min:0,max:24" value="8"></td>
+            </tr>
+            <tr>
+                <td>任务内容:</td>
+                <td><input class="easyui-textbox" name="detail" style="height: 60px;" data-options="multiline:true"/>
+                </td>
+            </tr>
+            <tr>
+                <td>存在问题:</td>
+                <td><input class="easyui-textbox" name="problem" style="height: 60px;" data-options="multiline:true"/>
+                </td>
+            </tr>
+            <tr>
+                <td>解决措施:</td>
+                <td><input class="easyui-textbox" name="solution" style="height: 60px;" data-options="multiline:true"/>
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>
 
 <script type="text/javascript"

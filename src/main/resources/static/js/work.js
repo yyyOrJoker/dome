@@ -6,18 +6,27 @@ $(function () {
     var addDaysUrl = "add";
     var tableUrl = "table";
     var tableOptionsUrl = "workedit.json";
+    var saveListUrl = "save";
+
     var specialFiledName = "text";
-    var specialFiledData = "text";
+    var specialFiledData = "data";
     var pmstatusFiledData = "pmstatus";
     var dmstatusFiledData = "dmstatus";
     var iscommitFiledData = "iscommit";
 
+    var DAY_PREFIX = "day";
+
+
+    var editIndex = undefined;
+    var editField = undefined;
+    var editStatu = false;
 
     laodWorkEdit();
     // laodWorkEditToolbar();
     // refreshDatagrid();
 
     function laodWorkEdit() {
+
         jQuery.getJSON(tableOptionsUrl, undefined, function (data) {
             console.info(data);
             table.datagrid(loadDatagridOptions(data));
@@ -60,20 +69,72 @@ $(function () {
         //选中单元格时编辑该单元格内容
         data.onClickCell = function (rowIndex, field, value) {
             if (value.hasOwnProperty(specialFiledData)) {
-                console.info(value)
+                var data = table.datagrid('getRows')[editIndex];
+                if (editIndex != undefined || editField != undefined) {
+                    data = getWorkEditDialogFrm(data);
+                    table.datagrid("updateRow", {
+                        index: editIndex,
+                        row: data
+                    });
+                    editStatu = true;
+                }
+                editIndex = rowIndex;
+                editField = field;
+                data = table.datagrid('getRows')[editIndex];
+                setWorkEditDialogFrm(data);
+                $("#workEditDialog").dialog("open");
             }
         };
         return data;
     }
 
+    function setWorkEditDialogFrm(data) {
+        $("#workEditDialogFrm").form("load", {
+            worktime: data[editField][specialFiledData]["worktime"],
+            detail: data[editField][specialFiledData]["detail"],
+            problem: data[editField][specialFiledData]["problem"],
+            solution: data[editField][specialFiledData]["solution"]
+        });
+    }
+
+    function getWorkEditDialogFrm(data) {
+        data[editField][specialFiledData]["worktime"] = $(":input[name='worktime']:eq(0)").val();
+        data[editField][specialFiledName] = $(":input[name='worktime']:eq(0)").val();
+        data[editField][specialFiledData]["detail"] = $(":input[name='detail']:eq(0)").val();
+        data[editField][specialFiledData]["problem"] = $(":input[name='problem']:eq(0)").val();
+        data[editField][specialFiledData]["solution"] = $(":input[name='solution']:eq(0)").val();
+        return data;
+    }
+
+    function saveList() {
+        var row = table.datagrid("getRows")[0];
+        var list = new Array();
+        for (var i = 1; i <= 7; i++) {
+            list.push(row[DAY_PREFIX + i][specialFiledData]);
+        }
+        jQuery.ajax({
+            url: saveListUrl,
+            data: {"list": list},
+            dataType: "json",
+            type: "post",
+            success: function (data) {
+                console.info(data);
+            }
+        });
+    }
+
+
     function addDays() {
         var frm = getFrom();
         jQuery.get(addDaysUrl, frm, function (data) {
             table.datagrid("appendRow", data);
+            editStatu = true;
         });
     }
 
     function nextDays(x) {
+        checkEditStatu();
+        if (editStatu)return;
         var frm = getFrom();
         frm.day = frm.day * 1 + x * 1;
         if (frm.day < 1) {
@@ -87,7 +148,17 @@ $(function () {
         refreshDatagrid();
     }
 
+    function checkEditStatu() {
+        if (editStatu) {
+            jQuery.messager.confirm("提示", "当前有为保存的数据,若要强制操作请确定后重复操作!", function (r) {
+                if (r) editStatu = false;
+            });
+        }
+    }
+
     function refreshDatagrid() {
+        checkEditStatu();
+        if (editStatu)return;
         var frm = getFrom();
         table.datagrid({
             url: tableUrl,

@@ -47,8 +47,15 @@
         "halign": "center"
       },
       {
-        "title": "服务地点",
+        "title": "结算方式",
         "field": "settle",
+        "width": 100,
+        "align": "center",
+        "halign": "center"
+      },
+      {
+        "title": "是否净价",
+        "field": "netprice",
         "width": 100,
         "align": "center",
         "halign": "center"

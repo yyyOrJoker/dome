@@ -6,6 +6,7 @@ import com.hy.model.easyui.EasyUIDatagrid;
 import com.hy.service.TestEasyUIService;
 import com.hy.service.TestEasyUIServiceImpl;
 import com.hy.service.jpa.CmProjectRepostory;
+import freemarker.template.utility.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -75,5 +76,12 @@ public class TestController {
     public List findAllcatalogs() {
         List<Map<String, Object>> list = testEasyUIServiceImpl.loadAllCatalogs(0, "");
         return list;
+    }
+
+    @RequestMapping("/save")
+    @ResponseBody
+    public String saveWorktime(@RequestParam("list") List<CmTimesheet> list) {
+        System.out.println(StringUtil.tryToString(list));
+        return "";
     }
 }
