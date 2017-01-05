@@ -19,9 +19,8 @@ public class AuditController {
     AuditInfoRepostory auditInfoRepostory;
     Timesheet timesheet;
 
-    @GetMapping
+    @GetMapping("/")
     public String index() {
-        System.out.println("访问首页...");
         return "redirect:/audit.html";
     }
 }

@@ -14,10 +14,10 @@ import java.util.List;
 @Service
 public interface TimesheetRepostory extends JpaRepository<Timesheet, Integer> {
 
-    @Query(value = "select max(ordinal) from CmTimesheet where userId=?1")
+    @Query(value = "select max(ordinal) from Timesheet where userId=?1")
     Integer getMaxToOrdinal(Integer userId);
 
-    @Query(value = "select ordinal from CmTimesheet where userId=?1 and editDate>=?2 and editDate < ?3 group by ordinal", nativeQuery = false)
+    @Query(value = "select ordinal from Timesheet where userId=?1 and editDate>=?2 and editDate < ?3 group by ordinal", nativeQuery = false)
     List<Object> getOrdinalGroupByOrdinalByUserId(Integer userId, Date start, Date end);
 
     List<Timesheet> findByUserIdAndOrdinalOrderByEditDate(int userId, int ordinal);
