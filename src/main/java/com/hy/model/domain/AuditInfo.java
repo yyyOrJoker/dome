@@ -6,11 +6,12 @@ import java.util.Date;
 /**
  * Created by yyy1867 on 2017/1/5.
  */
+@Entity
 public class AuditInfo extends BaseDomain {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "timesheet_id")
-    private CmTimesheet timesheet;
+    private Timesheet timesheet;
 
     private int auditPresonId;
 
@@ -20,11 +21,11 @@ public class AuditInfo extends BaseDomain {
     private String resultl;
     private String advice;
 
-    public CmTimesheet getTimesheet() {
+    public Timesheet getTimesheet() {
         return timesheet;
     }
 
-    public void setTimesheet(CmTimesheet timesheet) {
+    public void setTimesheet(Timesheet timesheet) {
         this.timesheet = timesheet;
     }
 
