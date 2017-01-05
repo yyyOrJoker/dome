@@ -1,5 +1,6 @@
 package com.hy.controller;
 
+import com.hy.model.FromList;
 import com.hy.model.WorkFrom;
 import com.hy.model.domain.CmTimesheet;
 import com.hy.model.easyui.EasyUIDatagrid;
@@ -11,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.List;
@@ -80,7 +78,7 @@ public class TestController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public String saveWorktime(@RequestParam("list") List<CmTimesheet> list) {
+    public String saveWorktime(@RequestBody List<CmTimesheet> list) {
         System.out.println(StringUtil.tryToString(list));
         return "";
     }
