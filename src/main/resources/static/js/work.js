@@ -69,23 +69,27 @@ $(function () {
         //选中单元格时编辑该单元格内容
         data.onClickCell = function (rowIndex, field, value) {
             if (value.hasOwnProperty(specialFiledData)) {
-                var data = table.datagrid('getRows')[editIndex];
-                if (editIndex != undefined || editField != undefined) {
-                    data = getWorkEditDialogFrm(data);
-                    table.datagrid("updateRow", {
-                        index: editIndex,
-                        row: data
-                    });
-                    editStatu = true;
-                }
+                saveEdit();
                 editIndex = rowIndex;
                 editField = field;
-                data = table.datagrid('getRows')[editIndex];
+                var data = table.datagrid('getRows')[editIndex];
                 setWorkEditDialogFrm(data);
                 $("#workEditDialog").dialog("open");
             }
         };
         return data;
+    }
+
+    function saveEdit() {
+        if (editIndex != undefined || editField != undefined) {
+            var data = table.datagrid('getRows')[editIndex];
+            data = getWorkEditDialogFrm(data);
+            table.datagrid("updateRow", {
+                index: editIndex,
+                row: data
+            });
+            editStatu = true;
+        }
     }
 
     function setWorkEditDialogFrm(data) {
@@ -107,21 +111,50 @@ $(function () {
     }
 
     function saveList() {
-        var row = table.datagrid("getRows")[0];
+        saveEdit();
         var list = new Array();
-        for (var i = 1; i <= 7; i++) {
-            list.push(row[DAY_PREFIX + i][specialFiledData]);
+        var row = table.datagrid("getChecked");
+        for (var i in row) {
+            var is = new Array();
+            for (var j = 1; j <= 7; j++) {
+                is.push(row[i][DAY_PREFIX + j][specialFiledData]);
+            }
+            list.push(is);
         }
-        console.info(JSON.stringify(list));
+        postBody(saveListUrl, list, function (data) {
+            console.info(typeof data);
+            if (typeof data === "number") {
+                $.messager.alert("提示", "共选中" + list.length + "条信息,成功更新" + data + "条!");
+                return;
+            }
+            $.messager.alert("提示", "保存信息出错,请与管理员联系!!!");
+        });
+        refreshDatagrid();
+        // jQuery.ajax({
+        //     url: saveListUrl,
+        //     data: JSON.stringify(list),
+        //     dataType: "json",
+        //     contentType: "application/json",
+        //     type: "post",
+        //     success: function (data) {
+        //         console.info(typeof data);
+        //         if (typeof data === "number") {
+        //             $.messager.alert("提示", "共选中" + list.length + "条信息,成功更新" + data + "条!");
+        //             return;
+        //         }
+        //         $.messager.alert("提示", "保存信息出错,请与管理员联系!!!");
+        //     }
+        // });
+    }
+
+    function postBody(url, data, func) {
         jQuery.ajax({
-            url: saveListUrl,
-            data: JSON.stringify(list),
+            url: url,
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",
             type: "post",
-            success: function (data) {
-                console.info(data);
-            }
+            success: func
         });
     }
 

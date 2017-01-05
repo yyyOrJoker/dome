@@ -37,10 +37,40 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
     CmCatalogRepostory cmCatalogRepostory;
 
     @Override
-    public void saveDays(List<CmTimesheet> cms) {
-        for (CmTimesheet cm : cms) {
-            cmTimesheetRepostory.saveAndFlush(cm);
+    public boolean saveDays(List<CmTimesheet> cms) {
+        if (isExistsDays(cms)) {
+            for (CmTimesheet cm : cms) {
+                if (cm.getIscommit() != null && cm.getIscommit()) continue;
+                cmTimesheetRepostory.saveAndFlush(cm);
+            }
+            return true;
         }
+        return false;
+    }
+
+    private boolean isExistsDays(List<CmTimesheet> cms) {
+        if (cms.size() == 7) {
+            List<Integer> ids = new ArrayList<Integer>();
+            for (CmTimesheet t : cms) {
+                if (t.getId() == null) return false;
+                ids.add(t.getId());
+            }
+            return cmTimesheetRepostory.findByIdIn(ids).size() == 7;
+        }
+        return false;
+    }
+
+    @Transactional
+    @Override
+    public Boolean delDays(List<Integer> ids) {
+        List<CmTimesheet> list = cmTimesheetRepostory.findByIdInAndIscommit(ids, null);
+        if (list.size() == 7) {
+            for (CmTimesheet cm : list) {
+                cmTimesheetRepostory.delete(cm);
+            }
+            return true;
+        }
+        return false;
     }
 
     //添加一周的工时
@@ -69,7 +99,7 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
             calendar.add(Calendar.DAY_OF_YEAR, 1);
             data.add(cmTimesheet);
         }
-        //cmTimesheetRepostory.save(data);
+        cmTimesheetRepostory.save(data);
         return parseMap(data);
     }
 

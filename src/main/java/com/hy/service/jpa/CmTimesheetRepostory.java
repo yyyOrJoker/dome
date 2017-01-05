@@ -2,7 +2,6 @@ package com.hy.service.jpa;
 
 import com.hy.model.domain.CmTimesheet;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
@@ -24,4 +23,8 @@ public interface CmTimesheetRepostory extends JpaRepository<CmTimesheet, Integer
     List<CmTimesheet> findByUserIdAndOrdinalOrderByEditDate(int userId, int ordinal);
 
     List<CmTimesheet> findByEditDateAndUserId(Date editDate, int userId);
+
+    List<CmTimesheet> findByIdIn(List<Integer> ids);
+
+    List<CmTimesheet> findByIdInAndIscommit(List<Integer> ids, Boolean iscommit);
 }

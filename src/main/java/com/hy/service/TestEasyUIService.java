@@ -32,5 +32,8 @@ public interface TestEasyUIService {
     int getDayByDate(Date date) throws ParseException;
 
     //保存一周的工时
-    void saveDays(List<CmTimesheet> cms);
+    boolean saveDays(List<CmTimesheet> cms);
+
+    //删除一周的工时
+    Boolean delDays(List<Integer> ids);
 }

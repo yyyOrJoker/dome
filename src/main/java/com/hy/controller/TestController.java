@@ -37,12 +37,6 @@ public class TestController {
         return "redirect:/work.html";
     }
 
-    @GetMapping("/info")
-    @ResponseBody
-    public String info() {
-        return "试试能否正常访问!";
-    }
-
     @GetMapping("/add")
     @ResponseBody
     public Map addWorkSheet(WorkFrom frm) throws ParseException {
@@ -53,13 +47,6 @@ public class TestController {
     @ResponseBody
     public List getWorkSheetEdit(@RequestParam("year") Integer year, @RequestParam("day") Integer e) {
         return testEasyUIServiceImpl.loadAllWorkSheet(USERID, year, e);
-    }
-
-    @GetMapping("/test")
-    public String test(ModelMap map) {
-        System.out.println("dao");
-
-        return "work";
     }
 
     @RequestMapping("/findAllprojects")
@@ -78,12 +65,19 @@ public class TestController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public Boolean saveWorktime(@RequestBody List<CmTimesheet> list) {
-        try {
-            testEasyUIServiceImpl.saveDays(list);
-        } catch (RuntimeException e) {
-            return false;
+    public Integer saveWorktime(@RequestBody List<List<CmTimesheet>> list) {
+        int count = 0;
+        for (List<CmTimesheet> cms : list) {
+            if (testEasyUIServiceImpl.saveDays(cms)) count++;
         }
-        return true;
+        return count;
+    }
+
+    @RequestMapping("/del")
+    @ResponseBody
+    public Integer delWorkTime(@RequestBody List<Integer> list) {
+        int count = 0;
+
+        return count;
     }
 }
