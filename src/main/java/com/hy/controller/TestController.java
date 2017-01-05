@@ -75,9 +75,21 @@ public class TestController {
 
     @RequestMapping("/del")
     @ResponseBody
-    public Integer delWorkTime(@RequestBody List<Integer> list) {
+    public Integer delWorkTime(@RequestBody List<List<Integer>> list) {
         int count = 0;
+        for (List<Integer> ids : list) {
+            if (testEasyUIServiceImpl.delDays(ids)) count++;
+        }
+        return count;
+    }
 
+    @RequestMapping("/submit")
+    @ResponseBody
+    public Integer submitDays(@RequestBody List<List<CmTimesheet>> list) {
+        int count = 0;
+        for (List<CmTimesheet> cms : list) {
+            if (testEasyUIServiceImpl.submitDays(cms)) count++;
+        }
         return count;
     }
 }

@@ -28,6 +28,7 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
     public static final SimpleDateFormat yyyyMMddE = new SimpleDateFormat("yyyy-MM-dd E", Locale.CHINA);
 
     public static final String DAY_PREFIX = "day";
+    public static final String EDITDAY_PREFIX = "editDays";
 
     @Autowired
     CmTimesheetRepostory cmTimesheetRepostory;
@@ -36,11 +37,28 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
     @Autowired
     CmCatalogRepostory cmCatalogRepostory;
 
+    @Transactional
     @Override
     public boolean saveDays(List<CmTimesheet> cms) {
         if (isExistsDays(cms)) {
             for (CmTimesheet cm : cms) {
                 if (cm.getIscommit() != null && cm.getIscommit()) continue;
+                cmTimesheetRepostory.saveAndFlush(cm);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    @Override
+    public boolean submitDays(List<CmTimesheet> cms) {
+        if (isExistsDays(cms)) {
+            for (CmTimesheet cm : cms) {
+                if (cm.getIscommit() != null && cm.getIscommit()) continue;
+                if (cm.getWorktime() != null && cm.getWorktime() > 0) {
+                    cm.setIscommit(true);
+                }
                 cmTimesheetRepostory.saveAndFlush(cm);
             }
             return true;
@@ -208,6 +226,7 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
             Map<String, Object> param = new HashMap<String, Object>();
             param.put("data", t);
             param.put("text", t.getWorktime());
+            param.put(EDITDAY_PREFIX, yyyyMMddE.format(t.getEditDate()));
             map.put(DAY_PREFIX + day, param);
         }
         return map;

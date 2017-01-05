@@ -2,7 +2,6 @@
   "title": "工时填报",
   "fit": true,
   "fitColumns": true,
-  "striped": true,
   "loadMsg": "数据加载中...",
   "pagination": true,
   "rownumbers": true,
@@ -18,11 +17,8 @@
   "columns": [
     [
       {
-        "title": "选择",
-        "field": "Id",
-        "width": 100,
-        "align": "center",
-        "halign": "center",
+        "title": "ID",
+        "field": "ID",
         "checkbox": true
       },
       {

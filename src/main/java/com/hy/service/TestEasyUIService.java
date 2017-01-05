@@ -36,4 +36,7 @@ public interface TestEasyUIService {
 
     //删除一周的工时
     Boolean delDays(List<Integer> ids);
+
+    //提交一周的工时
+    boolean submitDays(List<CmTimesheet> cms);
 }

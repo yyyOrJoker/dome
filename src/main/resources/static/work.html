@@ -23,7 +23,7 @@
             <a type="button" class="easyui-linkbutton" ws-click="nextDays(-1)">上周</a>
             <a type="button" class="easyui-linkbutton" ws-click="nextDays(1)">下周</a>
             <a type="button" class="easyui-linkbutton" ws-click="saveList()">保存</a>
-            <a type="button" class="easyui-linkbutton">提交</a>
+            <a type="button" class="easyui-linkbutton" ws-click="submitList()">提交</a>
             <a type="button" class="easyui-linkbutton">被拒绝的工时信息</a>
         </div>
         <div>
@@ -51,6 +51,7 @@
             <label>结算方式:<input type="text" name="settle" class="easyui-textbox" data-options="width:100"></label>
             <label>是否净价:<input type="text" name="netprice" class="easyui-textbox" data-options="width:100"></label>
             <a type="button" class="easyui-linkbutton" ws-click="addDays()">添加工时</a>
+            <a type="button" class="easyui-linkbutton" ws-click="delList()">移除工时</a>
         </div>
     </form>
 </div>
@@ -65,7 +66,7 @@
         <table style="margin: 0px auto;">
             <tr>
                 <td>日期:</td>
-                <td><input class="easyui-textbox" name="editDate" value="2017-01-04 星期三" disabled></td>
+                <td><input id="editDate" class="easyui-textbox" name="editDate" value="2017-01-04 星期三" disabled></td>
             </tr>
             <tr>
                 <td>工时:</td>
