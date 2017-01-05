@@ -112,10 +112,12 @@ $(function () {
         for (var i = 1; i <= 7; i++) {
             list.push(row[DAY_PREFIX + i][specialFiledData]);
         }
+        console.info(JSON.stringify(list));
         jQuery.ajax({
             url: saveListUrl,
-            data: {"list": list},
+            data: JSON.stringify(list),
             dataType: "json",
+            contentType: "application/json",
             type: "post",
             success: function (data) {
                 console.info(data);

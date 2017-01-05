@@ -78,8 +78,12 @@ public class TestController {
 
     @RequestMapping("/save")
     @ResponseBody
-    public String saveWorktime(@RequestBody List<CmTimesheet> list) {
-        System.out.println(StringUtil.tryToString(list));
-        return "";
+    public Boolean saveWorktime(@RequestBody List<CmTimesheet> list) {
+        try {
+            testEasyUIServiceImpl.saveDays(list);
+        } catch (RuntimeException e) {
+            return false;
+        }
+        return true;
     }
 }

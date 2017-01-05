@@ -1,6 +1,7 @@
 package com.hy.service;
 
 import com.hy.model.WorkFrom;
+import com.hy.model.domain.CmTimesheet;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -29,4 +30,7 @@ public interface TestEasyUIService {
 
     //获取指定时间是当年的第几周
     int getDayByDate(Date date) throws ParseException;
+
+    //保存一周的工时
+    void saveDays(List<CmTimesheet> cms);
 }

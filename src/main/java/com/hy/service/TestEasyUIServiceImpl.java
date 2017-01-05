@@ -36,6 +36,13 @@ public class TestEasyUIServiceImpl implements TestEasyUIService {
     @Autowired
     CmCatalogRepostory cmCatalogRepostory;
 
+    @Override
+    public void saveDays(List<CmTimesheet> cms) {
+        for (CmTimesheet cm : cms) {
+            cmTimesheetRepostory.saveAndFlush(cm);
+        }
+    }
+
     //添加一周的工时
     @Transactional
     @Override
